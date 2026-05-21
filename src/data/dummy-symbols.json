@@ -1,0 +1,14 @@
+{
+  "focusList": [
+    { "symbol": "BTCUSD", "name": "Bitcoin" },
+    { "symbol": "ETHUSD", "name": "Ethereum" },
+    { "symbol": "AAPL", "name": "Apple Inc." },
+    { "symbol": "TSLA", "name": "Tesla Inc." }
+  ],
+  "watchList": [
+    { "symbol": "SOLUSD", "name": "Solana" },
+    { "symbol": "DOGEUSD", "name": "Dogecoin" },
+    { "symbol": "MSFT", "name": "Microsoft" },
+    { "symbol": "AMZN", "name": "Amazon" }
+  ]
+}
