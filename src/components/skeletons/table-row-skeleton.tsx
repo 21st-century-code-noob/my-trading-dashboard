@@ -5,7 +5,7 @@ export type TableRowSkeletonProps = {
   count?: number;
   /** CSS class for each shimmer bar. @default "h-4 w-full rounded bg-skeleton skeleton-pulse" */
   barClassName?: string;
-  /** CSS class for each <td>. @default "py-6 pl-3" */
+  /** CSS class for each <td>. @default "py-6 px-4" */
   cellClassName?: string;
 };
 
