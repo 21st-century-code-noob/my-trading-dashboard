@@ -7,7 +7,7 @@ function TradingBoard() {
       <FocusCardList />
       <WatchList />
     </main>
-  )
+  );
 }
 
 export default TradingBoard;

@@ -3,7 +3,7 @@ import { useFlashOnChange } from "@/hooks/useFlashOnChange";
 type PriceTextProps = {
   price?: number;
   decimals?: number;
-}
+};
 
 function PriceText({ price, decimals = 2 }: PriceTextProps) {
   const { flashClass, flashKey } = useFlashOnChange(price);

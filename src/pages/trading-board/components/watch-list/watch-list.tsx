@@ -18,7 +18,7 @@ const headers: ListHeader<WatchRow>[] = [
     render: (row) => <SymbolNameCell symbol={row.symbol} name={row.name} />,
     containerClassName: "w-1/2",
   },
-  { 
+  {
     key: "price",
     label: "Price",
     render: (row) => <PriceCell symbol={row.symbol} />,
@@ -38,7 +38,7 @@ function WatchList() {
   const processedList = watchList.map((item) => ({
     ...item,
     id: item.symbol,
-  }))
+  }));
 
   return (
     <section>

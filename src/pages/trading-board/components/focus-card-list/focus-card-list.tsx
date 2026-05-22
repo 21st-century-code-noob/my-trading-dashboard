@@ -1,5 +1,5 @@
 import FocusCard from "@/components/cards/focus-card/focus-card";
-import data from "@/data/dummy-symbols.json"
+import data from "@/data/dummy-symbols.json";
 
 
 function FocusCardList() {
@@ -15,7 +15,7 @@ function FocusCardList() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 export default FocusCardList;

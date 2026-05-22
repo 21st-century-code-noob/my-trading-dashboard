@@ -7,7 +7,7 @@ function App() {
       <Header />
       <TradingBoard />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

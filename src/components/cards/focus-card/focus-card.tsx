@@ -25,7 +25,7 @@ function FocusCard({
         <PriceChangeText priceChange={priceData?.priceChange} />
       </div>
     </BaseCard>
-  )
+  );
 }
 
 export default FocusCard;
