@@ -1,6 +1,12 @@
+import TextSkeleton from "@/components/skeletons/text-skeleton";
+
 type PriceChangeTextProps = {
   priceChange?: number;
   decimals?: number;
+  /** When true, show a skeleton placeholder. */
+  loading?: boolean;
+  /** CSS class for the skeleton bar. @default "h-5 w-16" */
+  skeletonClassName?: string;
 };
 
 function getChangeTextClass (priceChange: number | undefined) {
@@ -19,7 +25,11 @@ const getChangePercentString = (changePercent?: number, decimals?: number) => {
   return `${changePercentFixed}%`;
 };
 
-function PriceChangeText({ priceChange, decimals = 2}: PriceChangeTextProps) {
+function PriceChangeText({ priceChange, decimals = 2, loading = false, skeletonClassName = "h-5 w-16"}: PriceChangeTextProps) {
+  if (loading) {
+    return <TextSkeleton lines={1} barClassName={skeletonClassName} />;
+  }
+
   return (
     <span className={`font-mono font-light ${getChangeTextClass(priceChange)}`}>
       {getChangePercentString(priceChange, decimals)}

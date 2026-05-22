@@ -34,23 +34,35 @@ const BATCH_SIZE = 3;
 let tickerStarted = false;
 
 function startTicker() {
-  const allSymbols = useSymbolStore.getState().allSymbols;
-  if (tickerStarted || allSymbols.length === 0) return;
+  if (tickerStarted) return;
+
+  // Wait until symbols are loaded before starting prices
+  const symbolStore = useSymbolStore.getState();
+  if (symbolStore.isLoading) return;
+
   tickerStarted = true;
 
-  const store = usePriceStore.getState;
+  const allSymbols = symbolStore.allSymbols;
+  if (allSymbols.length === 0) return;
+
+  const priceStore = usePriceStore.getState;
 
   // seed initial prices with startPrice + random initial change (±1.5%)
   for (const { symbol, name } of allSymbols) {
     const base = generateBasePrice(symbol);
-    store().setStartPrice(symbol, name, base);
+    priceStore().setStartPrice(symbol, name, base);
     const initialChangePercent = (Math.random() - 0.5) * 3;
     const currentPrice = base * (1 + initialChangePercent / 100);
     const priceChange = parseFloat(
       (((currentPrice - base) / base) * 100).toFixed(2),
     );
-    store().updatePrice(symbol, { currentPrice, priceChange });
+    priceStore().updatePrice(symbol, { currentPrice, priceChange });
   }
+
+  // Simulate 1-second price loading delay, then mark as loaded
+  setTimeout(() => {
+    priceStore().setIsLoading(false);
+  }, 1000);
 
   // keep updating random symbols
   setInterval(() => {
@@ -58,7 +70,7 @@ function startTicker() {
     const batch = shuffled.slice(0, BATCH_SIZE);
 
     for (const { symbol } of batch) {
-      const prev = store().getPriceBySymbol(symbol);
+      const prev = priceStore().getPriceBySymbol(symbol);
       // subtle random walk: ±0.1% relative to currentPrice
       const stepPercent = (Math.random() - 0.5) * 0.2;
       const base = prev?.currentPrice ?? generateBasePrice(symbol);
@@ -69,19 +81,27 @@ function startTicker() {
           ? parseFloat((((currentPrice - start) / start) * 100).toFixed(2))
           : 0;
 
-      store().updatePrice(symbol, { currentPrice, priceChange });
+      priceStore().updatePrice(symbol, { currentPrice, priceChange });
     }
   }, UPDATE_INTERVAL_MS);
 }
 
-// kick off the singleton ticker eagerly (no need to wait for a component)
-startTicker();
+// Poll until symbols are loaded, then kick off the price ticker
+const SYMBOL_POLL_INTERVAL = 50;
+const symbolPollTimer = setInterval(() => {
+  const symbolStore = useSymbolStore.getState();
+  if (!symbolStore.isLoading) {
+    clearInterval(symbolPollTimer);
+    startTicker();
+  }
+}, SYMBOL_POLL_INTERVAL);
 
 // ── React hook (pure reader) ─────────────────────────────────────────
 
 export function usePriceData() {
   const priceData = usePriceStore((s) => s.priceData);
   const getPriceBySymbol = usePriceStore((s) => s.getPriceBySymbol);
+  const isLoading = usePriceStore((s) => s.isLoading);
 
   const getPrice = useCallback(
     (symbol: string): PriceData | undefined => getPriceBySymbol(symbol),
@@ -93,5 +113,7 @@ export function usePriceData() {
     priceData,
     /** Get price data for a single symbol */
     getPriceBySymbol: getPrice,
+    /** Whether prices are still loading (initial seed + 1s delay) */
+    isLoading,
   };
 }

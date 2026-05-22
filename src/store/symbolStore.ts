@@ -11,12 +11,14 @@ interface SymbolStore {
   watchList: SymbolPair[];
   /** Deduplicated union of focus + watch lists */
   allSymbols: SymbolPair[];
+  isLoading: boolean;
 }
 
 export const useSymbolStore = create<SymbolStore>(() => ({
-  focusList: dummySymbols.focusList,
-  watchList: dummySymbols.watchList,
-  allSymbols: computeAllSymbols(),
+  focusList: [],
+  watchList: [],
+  allSymbols: [],
+  isLoading: true,
 }));
 
 function computeAllSymbols(): SymbolPair[] {
@@ -30,3 +32,13 @@ function computeAllSymbols(): SymbolPair[] {
   }
   return result;
 }
+
+// Simulate 1-second loading delay
+setTimeout(() => {
+  useSymbolStore.setState({
+    focusList: dummySymbols.focusList,
+    watchList: dummySymbols.watchList,
+    allSymbols: computeAllSymbols(),
+    isLoading: false,
+  });
+}, 1000);

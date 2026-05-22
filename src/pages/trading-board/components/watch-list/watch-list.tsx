@@ -5,7 +5,7 @@ import SymbolNameCell from "./list-cells/symbol-name-cell";
 import PriceChangeCell from "./list-cells/price-change-cell";
 import PriceCell from "./list-cells/price-cell";
 import { usePriceStore } from "@/store/priceStore";
-import { useSymbolStore } from "@/store/symbolStore";
+import { useSymbolData } from "@/hooks/useSymbolData";
 
 type WatchRow = {
   symbol: string;
@@ -44,8 +44,13 @@ const headers: ListHeader<WatchRow>[] = [
   },
 ];
 
-function WatchList() {
-  const watchList = useSymbolStore((s) => s.watchList);
+export type WatchListProps = {
+  /** When true, show a skeleton table while symbols load. */
+  loading?: boolean;
+};
+
+function WatchList({ loading = false }: WatchListProps) {
+  const { watchList } = useSymbolData();
 
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: "name",
@@ -90,8 +95,6 @@ function WatchList() {
     });
   }, [sortConfig, watchList]);
 
-  console.log("re-render!");
-
   return (
     <section>
       <h2 className="text-2xl mb-3 pl-1">Watch List</h2>
@@ -102,6 +105,7 @@ function WatchList() {
         sortKey={sortConfig.key}
         sortOrder={sortConfig.order}
         onSort={onSort}
+        loading={loading}
       />
     </section>
   );

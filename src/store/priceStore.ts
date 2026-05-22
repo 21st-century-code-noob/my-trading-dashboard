@@ -11,13 +11,16 @@ export interface PriceData {
 
 interface PriceStore {
   priceData: Record<string, PriceData>;
+  isLoading: boolean;
   updatePrice: (symbol: string, data: Partial<PriceData>) => void;
   setStartPrice: (symbol: string, name: string, startPrice: number) => void;
   getPriceBySymbol: (symbol: string) => PriceData | undefined;
+  setIsLoading: (loading: boolean) => void;
 }
 
 export const usePriceStore = create<PriceStore>((set, get) => ({
   priceData: {},
+  isLoading: true,
 
   updatePrice: (symbol, data) =>
     set((state) => ({
@@ -44,4 +47,6 @@ export const usePriceStore = create<PriceStore>((set, get) => ({
     })),
 
   getPriceBySymbol: (symbol) => get().priceData[symbol],
+
+  setIsLoading: (loading) => set({ isLoading: loading }),
 }));

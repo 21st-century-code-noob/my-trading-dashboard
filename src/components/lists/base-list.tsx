@@ -1,6 +1,8 @@
 import React from "react";
 import BaseCard from "@/components/cards/base-card";
 import { twMerge } from "tailwind-merge";
+import TableRowSkeleton from "@/components/skeletons/table-row-skeleton";
+import TableHeaderCellSkeleton from "@/components/skeletons/table-header-cell-skeleton";
 
 export interface Identifiable {
   id: string | number;
@@ -9,7 +11,6 @@ export interface Identifiable {
 export type ListHeader<T extends Identifiable> = {
   key: (keyof T) | (string & {});
   label: string;
-  // use tailwind style
   containerClassName?: string;
   render?: (row: T) => React.ReactNode;
 };
@@ -22,6 +23,10 @@ type TickerListProps<T extends Identifiable> = {
   sortKey?: (keyof T) | (string & {});
   sortOrder?: "ascend" | "descend";
   onSort?: (key: (keyof T) | (string & {})) => void;
+  /** When true, render a skeleton placeholder with `rowsSkeletonCount` rows. */
+  loading?: boolean;
+  /** Number of skeleton rows to show when loading. @default 8 */
+  rowsSkeletonCount?: number;
 };
 
 function BaseList<T extends Identifiable>({
@@ -32,6 +37,8 @@ function BaseList<T extends Identifiable>({
   sortOrder,
   onSort,
   rowClassName,
+  loading = false,
+  rowsSkeletonCount = 8,
 }: TickerListProps<T>) {
   return (
     <BaseCard className="p-0 overflow-hidden">
@@ -41,52 +48,59 @@ function BaseList<T extends Identifiable>({
             {headers.map((h) => (
               <th
                 key={String(h.key)}
-                className={
-                  twMerge("font-extralight uppercase text-left pt-3 pb-3 text-sm text-table-header pl-3 last:pr-3",
-                    onSort ? "hover:bg-card-hover cursor-pointer" : undefined,
-                    h.containerClassName)
-                }
+                className={twMerge(
+                  "font-extralight uppercase text-left pt-3 pb-3 text-sm text-table-header pl-3 last:pr-3",
+                  !loading && onSort ? "hover:bg-card-hover cursor-pointer" : undefined,
+                  h.containerClassName,
+                )}
                 onClick={() => {
-                  if (onSort) onSort(h.key);
+                  if (!loading && onSort) onSort(h.key);
                 }}
               >
-                {h.label}
-                {onSort && sortKey === h.key && (
-                  <span className="ml-1 text-primary">
-                    {sortOrder === "ascend" ? "▲" : "▼"}
-                  </span>
+                {loading ? (
+                  <TableHeaderCellSkeleton />
+                ) : (
+                  <>
+                    {h.label}
+                    {onSort && sortKey === h.key && (
+                      <span className="ml-1 text-primary">
+                        {sortOrder === "ascend" ? "▲" : "▼"}
+                      </span>
+                    )}
+                  </>
                 )}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
-            <tr
-              key={row.id}
-              onClick={() => {
-                if (onRowClick) onRowClick(row);
-              }}
-              className={twMerge(
-                onRowClick ? "hover:bg-card-hover cursor-pointer" : undefined,
-                rowClassName,
-              )}
-            >
-              {headers.map((h) => (
-                <td
-                  key={String(h.key)}
-                  className={
-                    twMerge("text-left text-lg py-6 pl-3 h-auto last:pl-3",
-                      h.containerClassName)
-                  }
-                >
-                  {h.render
-                    ? h.render(row)
-                    : String((row as Record<PropertyKey, unknown>)[h.key ] ?? "")}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {loading ? (
+            <TableRowSkeleton count={rowsSkeletonCount} />
+          ) : (
+            data.map((row) => (
+              <tr
+                key={row.id}
+                onClick={() => {
+                  if (onRowClick) onRowClick(row);
+                }}
+                className={twMerge(
+                  onRowClick ? "hover:bg-card-hover cursor-pointer" : undefined,
+                  rowClassName,
+                )}
+              >
+                {headers.map((h) => (
+                  <td
+                    key={String(h.key)}
+                    className={twMerge("text-left text-lg py-6 pl-3 h-auto last:pl-3", h.containerClassName)}
+                  >
+                    {h.render
+                      ? h.render(row)
+                      : String((row as Record<PropertyKey, unknown>)[h.key] ?? "")}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </BaseCard>
