@@ -3,6 +3,14 @@ A slick, high-performance frontend trading dashboard built to show how to handle
 
 **⚠️ Disclaimer**: All market data and price feeds are dynamically generated on the client side using randomized mock data. They are entirely fictional. 
 
+## 🚀 Quick Start
+
+Ensure you are using **Node.js 18+**. Clone the repository and fire up the local dynamic stream engine with a single command:
+
+```bash
+npm install && npm run dev
+```
+
 ## 🛠️ Tech Stack
   - **Core**: React (Modern functional components)
   - **State Management**: Zustand (Centralized, normalized data cache)
