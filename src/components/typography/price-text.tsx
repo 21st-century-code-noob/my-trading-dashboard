@@ -12,9 +12,9 @@ function PriceText({ price, decimals = 2 }: PriceTextProps) {
   return (
     <span
       key={flashKey}
-      className={`font-bold font-mono text-foreground ${flashClass}`}
+      className={`font-light font-mono text-foreground ${flashClass}`}
     >
-      {fixedPrice}
+      ${fixedPrice}
     </span>
   );
 }

@@ -21,7 +21,7 @@ const getChangePercentString = (changePercent?: number, decimals?: number) => {
 
 function PriceChangeText({ priceChange, decimals = 2}: PriceChangeTextProps) {
   return (
-    <span className={`font-mono ${getChangeTextClass(priceChange)}`}>
+    <span className={`font-mono font-light ${getChangeTextClass(priceChange)}`}>
       {getChangePercentString(priceChange, decimals)}
     </span>
 

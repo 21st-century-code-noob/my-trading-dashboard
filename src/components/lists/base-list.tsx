@@ -11,17 +11,27 @@ export type ListHeader<T extends Identifiable> = {
   label: string;
   // use tailwind style
   containerClassName?: string;
-  render?: (value: T) => React.ReactNode;
+  render?: (row: T) => React.ReactNode;
 };
 
 type TickerListProps<T extends Identifiable> = {
   headers: ListHeader<T>[];
   data: T[];
+  rowClassName?: string;
+  onRowClick?: (row: T) => void;
+  sortKey?: (keyof T) | (string & {});
+  sortOrder?: "ascend" | "descend";
+  onSort?: (key: (keyof T) | (string & {})) => void;
 };
 
 function BaseList<T extends Identifiable>({
   headers,
   data,
+  onRowClick,
+  sortKey,
+  sortOrder,
+  onSort,
+  rowClassName,
 }: TickerListProps<T>) {
   return (
     <BaseCard className="p-0 overflow-hidden">
@@ -32,23 +42,41 @@ function BaseList<T extends Identifiable>({
               <th
                 key={String(h.key)}
                 className={
-                  twMerge("font-extralight uppercase text-left pt-3 pb-3 text-sm text-table-header first:pl-3 last:pl-3",
+                  twMerge("font-extralight uppercase text-left pt-3 pb-3 text-sm text-table-header pl-3 last:pr-3",
+                    onSort ? "hover:bg-card-hover cursor-pointer" : undefined,
                     h.containerClassName)
                 }
+                onClick={() => {
+                  if (onSort) onSort(h.key);
+                }}
               >
                 {h.label}
+                {onSort && sortKey === h.key && (
+                  <span className="ml-1 text-primary">
+                    {sortOrder === "ascend" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              onClick={() => {
+                if (onRowClick) onRowClick(row);
+              }}
+              className={twMerge(
+                onRowClick ? "hover:bg-card-hover cursor-pointer" : undefined,
+                rowClassName,
+              )}
+            >
               {headers.map((h) => (
                 <td
                   key={String(h.key)}
                   className={
-                    twMerge("text-left text-lg pt-3 pb-2 first:pl-3 last:pl-3",
+                    twMerge("text-left text-lg py-6 pl-3 h-auto last:pl-3",
                       h.containerClassName)
                   }
                 >

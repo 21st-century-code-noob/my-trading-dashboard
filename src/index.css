@@ -6,6 +6,7 @@
 
   --color-background: hsl(165 20% 6%);        
   --color-card: hsl(165 15% 10%);
+  --color-card-hover: hsl(165 15% 13.5%);
   --color-foreground: hsl(165 10% 93%);
   --color-table-header: hsl(165 10% 55%);
   --color-border: hsl(165 12% 16%);

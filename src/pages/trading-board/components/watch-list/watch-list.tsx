@@ -1,15 +1,27 @@
-import { usePriceData } from "@/hooks/usePriceData";
+import { useState, useCallback, useMemo } from "react";
 import BaseList from "@/components/lists/base-list";
 import type { ListHeader } from "@/components/lists/base-list";
 import SymbolNameCell from "./list-cells/symbol-name-cell";
 import PriceChangeCell from "./list-cells/price-change-cell";
 import PriceCell from "./list-cells/price-cell";
+import { usePriceStore } from "@/store/priceStore";
+import { useSymbolStore } from "@/store/symbolStore";
 
 type WatchRow = {
   symbol: string;
   name: string;
   id: string;
 };
+
+type SortKey = "name" | "price" | "change";
+type SortOrder = "ascend" | "descend";
+
+interface SortConfig {
+  key: SortKey;
+  order: SortOrder;
+  /** Snapshot of price/change values captured at sort time, keyed by symbol */
+  snapshot: Record<string, number>;
+}
 
 const headers: ListHeader<WatchRow>[] = [
   {
@@ -33,17 +45,64 @@ const headers: ListHeader<WatchRow>[] = [
 ];
 
 function WatchList() {
-  const { watchList } = usePriceData();
+  const watchList = useSymbolStore((s) => s.watchList);
 
-  const processedList = watchList.map((item) => ({
-    ...item,
-    id: item.symbol,
-  }));
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: "name",
+    order: "ascend",
+    snapshot: {},
+  });
+
+  const onSort = useCallback((key: string) => {
+    setSortConfig((prev) => {
+      const nextOrder = key === prev.key && prev.order === "ascend" ? "descend" : "ascend";
+      const nextKey = key as SortKey;
+      const currentSnapshot: Record<string, number> = {};
+
+      if (nextKey === "price" || nextKey === "change") {
+        const storeState = usePriceStore.getState();
+
+        for (const item of watchList) {
+          const market = storeState.getPriceBySymbol(item.symbol);
+          currentSnapshot[item.symbol] =
+            nextKey === "price"
+              ? (market?.currentPrice ?? 0)
+              : (market?.priceChange ?? 0);
+        }
+      }
+
+      return { key: nextKey, order: nextOrder, snapshot: currentSnapshot };
+    });
+  }, [watchList]);
+
+  const sortedSnapshot = useMemo(() => {
+    const rows: WatchRow[] = watchList.map((item) => ({ ...item, id: item.symbol }));
+    return rows.sort((a, b) => {
+      if (sortConfig.key === "name") {
+        return sortConfig.order === "ascend"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      }
+      const valA = sortConfig.snapshot[a.symbol] ?? 0;
+      const valB = sortConfig.snapshot[b.symbol] ?? 0;
+
+      return sortConfig.order === "ascend" ? valA - valB : valB - valA;
+    });
+  }, [sortConfig, watchList]);
+
+  console.log("re-render!");
 
   return (
     <section>
       <h2 className="text-2xl mb-3 pl-1">Watch List</h2>
-      <BaseList headers={headers} data={processedList} />
+      <BaseList
+        headers={headers}
+        data={sortedSnapshot}
+        onRowClick={() => {}}
+        sortKey={sortConfig.key}
+        sortOrder={sortConfig.order}
+        onSort={onSort}
+      />
     </section>
   );
 }

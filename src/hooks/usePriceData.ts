@@ -1,23 +1,6 @@
 import { useCallback } from "react";
 import { usePriceStore, type PriceData } from "../store/priceStore";
-import dummySymbols from "../data/dummy-symbols.json";
-
-// ── static data ──────────────────────────────────────────────────────
-
-/** Flatten and deduplicate focus + watch lists into a single symbol array */
-function combineSymbols() {
-  const seen = new Set<string>();
-  const result: { symbol: string; name: string }[] = [];
-  for (const item of [...dummySymbols.focusList, ...dummySymbols.watchList]) {
-    if (!seen.has(item.symbol)) {
-      seen.add(item.symbol);
-      result.push(item);
-    }
-  }
-  return result;
-}
-
-const ALL_SYMBOLS = combineSymbols();
+import { useSymbolStore } from "../store/symbolStore";
 
 // ── mock price helpers ───────────────────────────────────────────────
 
@@ -51,13 +34,14 @@ const BATCH_SIZE = 3;
 let tickerStarted = false;
 
 function startTicker() {
-  if (tickerStarted || ALL_SYMBOLS.length === 0) return;
+  const allSymbols = useSymbolStore.getState().allSymbols;
+  if (tickerStarted || allSymbols.length === 0) return;
   tickerStarted = true;
 
   const store = usePriceStore.getState;
 
   // seed initial prices with startPrice + random initial change (±1.5%)
-  for (const { symbol, name } of ALL_SYMBOLS) {
+  for (const { symbol, name } of allSymbols) {
     const base = generateBasePrice(symbol);
     store().setStartPrice(symbol, name, base);
     const initialChangePercent = (Math.random() - 0.5) * 3;
@@ -70,7 +54,7 @@ function startTicker() {
 
   // keep updating random symbols
   setInterval(() => {
-    const shuffled = [...ALL_SYMBOLS].sort(() => Math.random() - 0.5);
+    const shuffled = [...allSymbols].sort(() => Math.random() - 0.5);
     const batch = shuffled.slice(0, BATCH_SIZE);
 
     for (const { symbol } of batch) {
@@ -105,12 +89,6 @@ export function usePriceData() {
   );
 
   return {
-    /** Combined deduplicated list from focus + watch lists */
-    allSymbols: ALL_SYMBOLS,
-    /** Focus list from the dummy data */
-    focusList: dummySymbols.focusList,
-    /** Watch list from the dummy data */
-    watchList: dummySymbols.watchList,
     /** The full price map stored in Zustand */
     priceData,
     /** Get price data for a single symbol */
