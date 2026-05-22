@@ -2,13 +2,21 @@
   "focusList": [
     { "symbol": "BTCUSD", "name": "Bitcoin" },
     { "symbol": "ETHUSD", "name": "Ethereum" },
-    { "symbol": "AAPL", "name": "Apple Inc." },
-    { "symbol": "TSLA", "name": "Tesla Inc." }
+    { "symbol": "USDAUD", "name": "USD to AUD" },
+    { "symbol": "GBPUSD", "name": "GBP to USD" }
   ],
   "watchList": [
     { "symbol": "SOLUSD", "name": "Solana" },
     { "symbol": "DOGEUSD", "name": "Dogecoin" },
-    { "symbol": "MSFT", "name": "Microsoft" },
-    { "symbol": "AMZN", "name": "Amazon" }
+    { "symbol": "LTCUSD", "name": "Litecoin" },
+    { "symbol": "XRPUSD", "name": "Ripple" },
+    { "symbol": "ADAUSD", "name": "Cardano" },
+    { "symbol": "DOTUSD", "name": "Polkadot" },
+    { "symbol": "EURUSD", "name": "EUR to USD" },
+    { "symbol": "USDJPY", "name": "USD to JPY" },
+    { "symbol": "USDCAD", "name": "USD to CAD" },
+    { "symbol": "USDCHF", "name": "USD to CHF" },
+    { "symbol": "AUDUSD", "name": "AUD to USD" },
+    { "symbol": "NZDUSD", "name": "NZD to USD" }
   ]
 }

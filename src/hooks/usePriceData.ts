@@ -22,22 +22,27 @@ const ALL_SYMBOLS = combineSymbols();
 // ── mock price helpers ───────────────────────────────────────────────
 
 function generateBasePrice(symbol: string): number {
-  if (/USD$|USDT$/.test(symbol)) {
-    const hash = symbol
-      .split("")
-      .reduce((acc, c) => acc + c.charCodeAt(0), 0);
-    if (symbol.startsWith("BTC")) return 87000 + (hash % 5000);
-    if (symbol.startsWith("ETH")) return 3200 + (hash % 400);
-    if (symbol.startsWith("SOL")) return 120 + (hash % 60);
-    if (symbol.startsWith("DOGE")) return 0.15 + (hash % 100) / 1000;
-    return 10 + (hash % 500);
-  }
-  const hash = symbol.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  if (symbol === "AAPL") return 185 + (hash % 10);
-  if (symbol === "TSLA") return 240 + (hash % 20);
-  if (symbol === "MSFT") return 420 + (hash % 15);
-  if (symbol === "AMZN") return 175 + (hash % 10);
-  return 50 + (hash % 200);
+  const hash = symbol
+    .split("")
+    .reduce((acc, c) => acc + c.charCodeAt(0), 0);
+
+  if (symbol.startsWith("BTC")) return 87000 + (hash % 5000);
+  if (symbol.startsWith("ETH")) return 3200 + (hash % 400);
+  if (symbol.startsWith("SOL")) return 120 + (hash % 60);
+  if (symbol.startsWith("DOGE")) return 0.15 + (hash % 100) / 1000;
+  if (symbol.startsWith("LTC")) return 70 + (hash % 30);
+  if (symbol.startsWith("XRP")) return 0.5 + (hash % 100) / 200;
+  if (symbol.startsWith("ADA")) return 0.3 + (hash % 100) / 500;
+  if (symbol.startsWith("DOT")) return 5 + (hash % 10);
+
+  // forex pairs — base price mimics realistic exchange rates
+  if (symbol.startsWith("EUR")) return 1.08 + (hash % 100) / 500;
+  if (symbol.startsWith("GBP")) return 1.27 + (hash % 100) / 500;
+  if (symbol.startsWith("USD")) return 0.65 + (hash % 100) / 200;
+  if (symbol.startsWith("AUD")) return 0.67 + (hash % 100) / 500;
+  if (symbol.startsWith("NZD")) return 0.61 + (hash % 100) / 500;
+
+  return 1 + (hash % 500) / 100;
 }
 
 const UPDATE_INTERVAL_MS = 2000;
@@ -51,10 +56,16 @@ function startTicker() {
 
   const store = usePriceStore.getState;
 
-  // seed initial prices with startPrice
-  for (const { symbol } of ALL_SYMBOLS) {
+  // seed initial prices with startPrice + random initial change (±1.5%)
+  for (const { symbol, name } of ALL_SYMBOLS) {
     const base = generateBasePrice(symbol);
-    store().setStartPrice(symbol, base);
+    store().setStartPrice(symbol, name, base);
+    const initialChangePercent = (Math.random() - 0.5) * 3;
+    const currentPrice = base * (1 + initialChangePercent / 100);
+    const priceChange = parseFloat(
+      (((currentPrice - base) / base) * 100).toFixed(2),
+    );
+    store().updatePrice(symbol, { currentPrice, priceChange });
   }
 
   // keep updating random symbols

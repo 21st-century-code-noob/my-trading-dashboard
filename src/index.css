@@ -7,9 +7,30 @@
   --color-background: hsl(165 20% 6%);        
   --color-card: hsl(165 15% 10%);
   --color-foreground: hsl(165 10% 93%);
-  
+  --color-table-header: hsl(165 10% 55%);
   --color-border: hsl(165 12% 16%);
 
   --color-up: hsl(162 100% 41%);
   --color-down: hsl(353 91% 62%);
+
+  --animate-flash-up: flash-up 600ms ease-in-out;
+  --animate-flash-down: flash-down 600ms ease-in-out;
+}
+
+@keyframes flash-up {
+  0%, 100% { color: var(--color-foreground); }
+  50% { color: var(--color-up); }
+}
+
+@keyframes flash-down {
+  0%, 100% { color: var(--color-foreground); }
+  50% { color: var(--color-down); }
+}
+
+.animate-flash-up {
+  animation: flash-up 600ms ease-in-out;
+}
+
+.animate-flash-down {
+  animation: flash-down 600ms ease-in-out;
 }

@@ -1,7 +1,12 @@
-function App() {
+import Header from "@/components/headers/header";
+import TradingBoard from "@/pages/trading-board/trading-board";
 
+function App() {
   return (
-      <div />
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <Header />
+      <TradingBoard />
+    </div>
   )
 }
 
