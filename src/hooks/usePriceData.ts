@@ -47,12 +47,14 @@ function startTicker() {
 
   const priceStore = usePriceStore.getState;
 
-  // seed initial prices with startPrice + random initial change (±1.5%)
+  // seed initial prices with startPrice ± at least 0.1 absolute delta
   for (const { symbol, name } of allSymbols) {
     const base = generateBasePrice(symbol);
     priceStore().setStartPrice(symbol, name, base);
-    const initialChangePercent = (Math.random() - 0.5) * 3;
-    const currentPrice = base * (1 + initialChangePercent / 100);
+    // ensure absolute price moves at least 0.01
+    const sign = Math.random() < 0.5 ? -1 : 1;
+    const delta = 0.01 + Math.random() * (base * 0.015); // 0.01 to 1.5% of base
+    const currentPrice = parseFloat((base + sign * delta).toFixed(8));
     const priceChange = parseFloat(
       (((currentPrice - base) / base) * 100).toFixed(2),
     );
@@ -71,16 +73,16 @@ function startTicker() {
 
     for (const { symbol } of batch) {
       const prev = priceStore().getPriceBySymbol(symbol);
-      // subtle random walk: ±0.1% relative to currentPrice
-      const stepPercent = (Math.random() - 0.5) * 0.2;
       const base = prev?.currentPrice ?? generateBasePrice(symbol);
-      const currentPrice = base * (1 + stepPercent / 100);
+      // ensure absolute price moves at least 0.01 each tick
+      const sign = Math.random() < 0.5 ? -1 : 1;
+      const delta = 0.01 + Math.random() * (Math.abs(base) * 0.002); // 0.01 to 0.2% of base
+      const currentPrice = parseFloat((base + sign * delta).toFixed(8));
       const start = prev?.startPrice ?? base;
       const priceChange =
         start !== 0
           ? parseFloat((((currentPrice - start) / start) * 100).toFixed(2))
           : 0;
-
       priceStore().updatePrice(symbol, { currentPrice, priceChange });
     }
   }, UPDATE_INTERVAL_MS);
