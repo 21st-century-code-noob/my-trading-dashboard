@@ -1,11 +1,11 @@
+import { twMerge } from "tailwind-merge";
 import TextSkeleton from "@/components/skeletons/text-skeleton";
+import { usePriceData } from "@/hooks/usePriceData";
 
 type PriceChangeTextProps = {
-  priceChange?: number;
+  symbol: string;
   decimals?: number;
-  /** When true, show a skeleton placeholder. */
-  loading?: boolean;
-  /** CSS class for the skeleton bar. @default "h-5 w-16" */
+  /** CSS class for the skeleton bar, merged with default "h-5 w-16". */
   skeletonClassName?: string;
 };
 
@@ -25,9 +25,13 @@ const getChangePercentString = (changePercent?: number, decimals?: number) => {
   return `${changePercentFixed}%`;
 };
 
-function PriceChangeText({ priceChange, decimals = 2, loading = false, skeletonClassName = "h-5 w-16"}: PriceChangeTextProps) {
-  if (loading) {
-    return <TextSkeleton lines={1} barClassName={skeletonClassName} />;
+function PriceChangeText({ symbol, decimals = 2, skeletonClassName }: PriceChangeTextProps) {
+  const { getPriceBySymbol, isLoading } = usePriceData();
+  const priceData = getPriceBySymbol(symbol);
+  const priceChange = priceData?.priceChange;
+
+  if (isLoading) {
+    return <TextSkeleton lines={1} barClassName={twMerge("h-5 w-16", skeletonClassName)} />;
   }
 
   return (

@@ -1,11 +1,9 @@
 import { usePriceData } from "@/hooks/usePriceData";
-import BaseCard from "../base-card";
+import BaseCard from "./base-card";
 import PriceText from "@/components/typography/price-text";
 import PriceChangeText from "@/components/typography/price-change-text";
 import TextSkeleton from "@/components/skeletons/text-skeleton";
 import PairIcon from "@/components/pair-icon/pair-icon";
-
-// Note: TextSkeleton is still used for the symbol/name skeleton above the price row.
 
 export type FocusCardProps = {
   symbol: string;
@@ -13,7 +11,7 @@ export type FocusCardProps = {
 };
 
 function FocusCard({ symbol, loading = false }: FocusCardProps) {
-  const { getPriceBySymbol, isLoading: priceLoading } = usePriceData();
+  const { getPriceBySymbol } = usePriceData();
   const priceData = getPriceBySymbol(symbol);
 
   return (
@@ -43,8 +41,8 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
       </div>
 
       <div className="flex justify-between">
-        <PriceText price={priceData?.currentPrice} loading={loading || priceLoading} />
-        <PriceChangeText priceChange={priceData?.priceChange} loading={loading || priceLoading} />
+        <PriceText symbol={symbol} />
+        <PriceChangeText symbol={symbol} />
       </div>
     </BaseCard>
   );

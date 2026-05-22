@@ -1,4 +1,4 @@
-import FocusCard from "@/components/cards/focus-card/focus-card";
+import FocusCard from "@/components/cards/focus-card";
 import { useSymbolData } from "@/hooks/useSymbolData";
 
 export type FocusCardListProps = {
