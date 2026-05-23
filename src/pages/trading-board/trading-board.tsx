@@ -6,7 +6,7 @@ function TradingBoard() {
   const { isLoading: symbolsLoading } = useSymbolData();
 
   return (
-    <main className="p-6 space-y-12">
+    <main className="p-3 space-y-12 max-w-5xl mx-auto w-full sm:p-6">
       <FocusCardList loading={symbolsLoading} />
       <WatchList loading={symbolsLoading} />
     </main>

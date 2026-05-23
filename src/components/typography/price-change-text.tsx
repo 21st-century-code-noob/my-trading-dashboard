@@ -7,6 +7,7 @@ type PriceChangeTextProps = {
   decimals?: number;
   /** CSS class for the skeleton bar, merged with default "h-5 w-16". */
   skeletonClassName?: string;
+  className?: string;
 };
 
 function getChangeTextClass (priceChange: number | undefined) {
@@ -25,7 +26,7 @@ const getChangePercentString = (changePercent?: number, decimals?: number) => {
   return `${changePercentFixed}%`;
 };
 
-function PriceChangeText({ symbol, decimals = 2, skeletonClassName }: PriceChangeTextProps) {
+function PriceChangeText({ symbol, decimals = 2, skeletonClassName, className }: PriceChangeTextProps) {
   const { getPriceBySymbol, isLoading } = usePriceData();
   const priceData = getPriceBySymbol(symbol);
   const priceChange = priceData?.priceChange;
@@ -35,7 +36,7 @@ function PriceChangeText({ symbol, decimals = 2, skeletonClassName }: PriceChang
   }
 
   return (
-    <span className={`font-mono font-light ${getChangeTextClass(priceChange)}`}>
+    <span className={twMerge(`font-mono text-base font-light ${getChangeTextClass(priceChange)}`, className)}>
       {getChangePercentString(priceChange, decimals)}
     </span>
 

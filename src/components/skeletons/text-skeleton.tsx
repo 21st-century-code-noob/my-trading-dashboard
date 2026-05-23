@@ -15,12 +15,12 @@ function TextSkeleton({
   barClassName,
 }: TextSkeletonProps) {
   return (
-    <div className={twMerge("flex flex-col gap-2", className)}>
+    <div className={twMerge("inline-flex flex-col gap-2", className)}>
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
           className={twMerge(
-            "h-4 w-full rounded bg-skeleton skeleton-pulse",
+            "h-4 w-full rounded bg-skeleton skeleton-pulse inline",
             barClassName,
           )}
         />

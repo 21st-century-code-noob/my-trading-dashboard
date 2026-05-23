@@ -23,8 +23,7 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
         <div className="min-w-0">
           {loading ? (
             <>
-              <TextSkeleton lines={1} barClassName="h-7 w-16" />
-              <TextSkeleton lines={1} className="mt-1" barClassName="h-4 w-24" />
+              <TextSkeleton lines={2} barClassName="h-5 w-16" />
             </>
           ) : (
             <>

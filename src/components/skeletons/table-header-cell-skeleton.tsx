@@ -10,7 +10,7 @@ function TableHeaderCellSkeleton({
 }: TableHeaderCellSkeletonProps) {
   return (
     <div
-      className={twMerge("h-3.5 w-16 rounded bg-skeleton skeleton-pulse",
+      className={twMerge("h-3.5 w-16 rounded bg-skeleton skeleton-pulse inline-block",
         barClassName,
       )}
     />

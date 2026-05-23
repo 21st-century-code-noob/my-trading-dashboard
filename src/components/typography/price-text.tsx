@@ -8,9 +8,10 @@ type PriceTextProps = {
   decimals?: number;
   /** CSS class for the skeleton bar, merged with default "h-5 w-20". */
   skeletonClassName?: string;
+  className?: string;
 };
 
-function PriceText({ symbol, decimals = 2, skeletonClassName }: PriceTextProps) {
+function PriceText({ symbol, decimals = 2, skeletonClassName, className }: PriceTextProps) {
   const { getPriceBySymbol, isLoading } = usePriceData();
   const priceData = getPriceBySymbol(symbol);
   const price = priceData?.currentPrice;
@@ -25,7 +26,7 @@ function PriceText({ symbol, decimals = 2, skeletonClassName }: PriceTextProps) 
   return (
     <span
       key={flashKey}
-      className={`font-light font-mono text-foreground ${flashClass}`}
+      className={twMerge(`font-light text-base font-mono text-foreground ${flashClass}`, className)}
     >
       ${fixedPrice}
     </span>

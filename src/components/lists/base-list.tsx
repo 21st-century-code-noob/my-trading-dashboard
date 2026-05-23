@@ -1,8 +1,8 @@
 import React from "react";
 import BaseCard from "@/components/cards/base-card";
 import { twMerge } from "tailwind-merge";
-import TableRowSkeleton from "@/components/skeletons/table-row-skeleton";
 import TableHeaderCellSkeleton from "@/components/skeletons/table-header-cell-skeleton";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export interface Identifiable {
   id: string | number;
@@ -13,6 +13,10 @@ export type ListHeader<T extends Identifiable> = {
   label: string;
   containerClassName?: string;
   render?: (row: T) => React.ReactNode;
+  hiddenOnMobile?: boolean;
+  hiddenOnDesktop?: boolean;
+  associatedKeys?: ((keyof T) | (string & {}))[];
+  align?: "left" | "right";
 };
 
 type TickerListProps<T extends Identifiable> = {
@@ -40,21 +44,45 @@ function BaseList<T extends Identifiable>({
   loading = false,
   rowsSkeletonCount = 8,
 }: TickerListProps<T>) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const visibleHeaders = headers.filter(
+    (h) => !((h.hiddenOnMobile && isMobile) || (h.hiddenOnDesktop && !isMobile)),
+  );
+
+  const getNextSortKey = (header: ListHeader<T>) => {
+    const keys = (header.associatedKeys?.length ? header.associatedKeys : [header.key]).map(String);
+    if (!sortKey) return keys[0];
+
+    const currentIdx = keys.indexOf(String(sortKey));
+    if (currentIdx === -1) return keys[0];
+
+    // same key + asc → toggle to desc; desc → advance to next key (wrap) with asc
+    if (sortOrder === "ascend") return String(sortKey);
+    return keys[(currentIdx + 1) % keys.length];
+  };
+
+  const isHeaderActive = (header: ListHeader<T>) => {
+    if (String(sortKey) === String(header.key)) return true;
+    return header.associatedKeys?.some((k) => String(k) === sortKey) ?? false;
+  };
+
   return (
     <BaseCard className="p-0 overflow-hidden">
       <table className="w-full p-3">
         <thead>
           <tr>
-            {headers.map((h) => (
+            {visibleHeaders.map((h) => (
               <th
                 key={String(h.key)}
                 className={twMerge(
-                  "font-extralight uppercase text-left pt-3 pb-3 text-sm text-table-header pl-3 last:pr-3",
+                  "font-extralight uppercase py-3 text-sm text-left text-table-header px-3 last:text-right",
+                  h.align === "right" ? "text-right" : null,
                   !loading && onSort ? "hover:bg-card-hover cursor-pointer" : undefined,
                   h.containerClassName,
                 )}
                 onClick={() => {
-                  if (!loading && onSort) onSort(h.key);
+                  if (!loading && onSort) onSort(getNextSortKey(h));
                 }}
               >
                 {loading ? (
@@ -62,7 +90,7 @@ function BaseList<T extends Identifiable>({
                 ) : (
                   <>
                     {h.label}
-                    {onSort && sortKey === h.key && (
+                    {onSort && isHeaderActive(h) && (
                       <span className="ml-1 text-primary">
                         {sortOrder === "ascend" ? "▲" : "▼"}
                       </span>
@@ -75,7 +103,22 @@ function BaseList<T extends Identifiable>({
         </thead>
         <tbody>
           {loading ? (
-            <TableRowSkeleton count={rowsSkeletonCount} />
+            Array.from({ length: rowsSkeletonCount }).map((_, i) => (
+              <tr key={i}>
+                {visibleHeaders.map((h) => (
+                  <td
+                    key={String(h.key)}
+                    className={twMerge(
+                      "py-6 pl-3 h-auto last:pr-3 last:text-right",
+                      h.align === "right" ? "text-right" : null,
+                      h.containerClassName,
+                    )}
+                  >
+                    <div className="h-4 w-full rounded bg-skeleton skeleton-pulse inline-block" />
+                  </td>
+                ))}
+              </tr>
+            ))
           ) : (
             data.map((row) => (
               <tr
@@ -88,10 +131,14 @@ function BaseList<T extends Identifiable>({
                   rowClassName,
                 )}
               >
-                {headers.map((h) => (
+                {visibleHeaders.map((h) => (
                   <td
                     key={String(h.key)}
-                    className={twMerge("text-left text-lg py-6 pl-3 h-auto last:pl-3", h.containerClassName)}
+                    className={
+                      twMerge("text-lg py-6 px-3 h-auto last:text-right",
+                        h.align === "right" ? "text-right" : null,
+                        h.containerClassName,
+                      )}
                   >
                     {h.render
                       ? h.render(row)

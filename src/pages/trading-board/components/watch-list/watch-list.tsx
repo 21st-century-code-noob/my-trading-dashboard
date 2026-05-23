@@ -6,6 +6,7 @@ import PriceChangeCell from "./list-cells/price-change-cell";
 import PriceCell from "./list-cells/price-cell";
 import { usePriceStore } from "@/store/priceStore";
 import { useSymbolData } from "@/hooks/useSymbolData";
+import PriceAndChangeCell from "./list-cells/price-and-change-cell";
 
 type WatchRow = {
   symbol: string;
@@ -35,12 +36,25 @@ const headers: ListHeader<WatchRow>[] = [
     label: "Price",
     render: (row) => <PriceCell symbol={row.symbol} />,
     containerClassName: "w-1/4",
+    hiddenOnMobile: true,
+    align: "right",
   },
   {
     key: "change",
     label: "24h Change",
     render: (row) => <PriceChangeCell symbol={row.symbol} />,
     containerClassName: "w-1/4",
+    hiddenOnMobile: true,
+    align: "right",
+  },
+  {
+    key: "price-and-change",
+    label: "Price & Chg",
+    render: (row) => <PriceAndChangeCell symbol={row.symbol} />,
+    containerClassName: "w-1/2",
+    hiddenOnDesktop: true,
+    associatedKeys:["price", "change"],
+    align: "right",
   },
 ];
 
