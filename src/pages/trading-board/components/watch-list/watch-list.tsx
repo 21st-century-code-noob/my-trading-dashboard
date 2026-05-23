@@ -4,9 +4,9 @@ import type { ListHeader, SnapshotSortConfig } from "@/components/lists/base-lis
 import SymbolNameCell from "./list-cells/symbol-name-cell";
 import PriceChangeCell from "./list-cells/price-change-cell";
 import PriceCell from "./list-cells/price-cell";
-import { usePriceStore } from "@/store/priceStore";
 import { useSymbolData } from "@/hooks/useSymbolData";
 import PriceAndChangeCell from "./list-cells/price-and-change-cell";
+import { usePriceData } from "@/hooks/usePriceData";
 
 type WatchRow = {
   symbol: string;
@@ -59,7 +59,7 @@ export type WatchListProps = {
 
 function WatchList({ loading = false }: WatchListProps) {
   const { watchList } = useSymbolData();
-
+  const { getPriceDataSnapshot } = usePriceData();
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: "name",
     order: "ascend",
@@ -73,7 +73,7 @@ function WatchList({ loading = false }: WatchListProps) {
       const currentSnapshot: Record<string, number> = {};
 
       if (nextKey === "price" || nextKey === "change") {
-        const storeState = usePriceStore.getState();
+        const storeState = getPriceDataSnapshot();
 
         for (const item of watchList) {
           const market = storeState.getPriceBySymbol(item.symbol);
@@ -86,7 +86,7 @@ function WatchList({ loading = false }: WatchListProps) {
 
       return { key: nextKey, order: nextOrder, snapshot: currentSnapshot };
     });
-  }, [watchList]);
+  }, [getPriceDataSnapshot, watchList]);
 
   const sortedSnapshot = useMemo(() => {
     const rows: WatchRow[] = watchList.map((item) => ({ ...item, id: item.symbol }));

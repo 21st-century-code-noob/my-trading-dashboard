@@ -103,8 +103,10 @@ const symbolPollTimer = setInterval(() => {
 export function usePriceData() {
   const priceData = usePriceStore((s) => s.priceData);
   const getPriceBySymbol = usePriceStore((s) => s.getPriceBySymbol);
+  const getPriceDataSnapshot = useCallback(() => {
+    return usePriceStore.getState();
+  }, []);
   const isLoading = usePriceStore((s) => s.isLoading);
-
   const getPrice = useCallback(
     (symbol: string): PriceData | undefined => getPriceBySymbol(symbol),
     [getPriceBySymbol],
@@ -115,6 +117,8 @@ export function usePriceData() {
     priceData,
     /** Get price data for a single symbol */
     getPriceBySymbol: getPrice,
+    /** The price data snapshot when calling this function */
+    getPriceDataSnapshot,
     /** Whether prices are still loading (initial seed + 1s delay) */
     isLoading,
   };
