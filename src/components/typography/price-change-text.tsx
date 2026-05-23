@@ -11,7 +11,10 @@ type PriceChangeTextProps = {
 };
 
 function getChangeTextClass (priceChange: number | undefined) {
-  if (!priceChange || priceChange < 0) {
+  if (priceChange === null || priceChange === undefined || priceChange === 0) {
+    return "text-neutral-400";
+  }
+  if (priceChange < 0) {
     return "text-down";
   } else {
     return "text-up";

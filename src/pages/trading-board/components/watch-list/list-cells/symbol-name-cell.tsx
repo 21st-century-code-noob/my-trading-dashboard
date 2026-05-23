@@ -7,7 +7,7 @@ type SymbolNameCellProps = BaseSymbolCellProps & {
 
 function SymbolNameCell({ symbol, name }: SymbolNameCellProps) {
   return (
-    <div className="flex flex-column items-center h-auto gap-3">
+    <div className="flex flex-row items-center h-auto gap-3">
       <PairIcon symbol={symbol} className="w-8 h-8 shrink-0" />
       <div className="flex flex-col min-w-0 items-start sm:flex-row sm:items-center">
         <span className="text-base text-foreground truncate">{symbol}</span>

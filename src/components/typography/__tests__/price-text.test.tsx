@@ -40,7 +40,7 @@ describe("PriceText", () => {
   it("renders skeleton when loading", () => {
     setLoading();
     const { container } = render(<PriceText symbol="BTCUSD" />);
-    expect(container.querySelector(".skeleton-pulse")).toBeTruthy();
+    expect(container.querySelector(".animate-skeleton-pulse")).toBeTruthy();
   });
 
   it("respects decimals prop", () => {

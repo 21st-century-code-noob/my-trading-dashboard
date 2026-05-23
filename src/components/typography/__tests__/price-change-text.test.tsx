@@ -41,11 +41,12 @@ describe("PriceChangeText", () => {
     expect(el.className).toContain("text-down");
   });
 
-  it("renders zero as 0.00% with text-down class (0 is falsy)", () => {
+  it("renders zero as 0.00% with text-neutral-400 class", () => {
     setPrice("BTCUSD", 0);
     render(<PriceChangeText symbol="BTCUSD" />);
     const el = screen.getByText("0.00%");
-    expect(el.className).toContain("text-down");
+    expect(el.className).toContain("text-neutral-400");
+    expect(el.className).not.toContain("text-down");
   });
 
   it("renders '--' when price data is missing", () => {
@@ -57,7 +58,7 @@ describe("PriceChangeText", () => {
     setLoading();
     const { container } = render(<PriceChangeText symbol="BTCUSD" />);
     // skeleton renders a div with skeleton-pulse class
-    expect(container.querySelector(".skeleton-pulse")).toBeTruthy();
+    expect(container.querySelector(".animate-skeleton-pulse")).toBeTruthy();
   });
 
   it("respects decimals prop", () => {

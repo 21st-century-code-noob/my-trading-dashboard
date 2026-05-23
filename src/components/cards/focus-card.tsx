@@ -4,6 +4,7 @@ import PriceText from "@/components/typography/price-text";
 import PriceChangeText from "@/components/typography/price-change-text";
 import TextSkeleton from "@/components/skeletons/text-skeleton";
 import PairIcon from "@/components/pair-icon/pair-icon";
+import IconSkeleton from "../skeletons/icon-skeleton";
 
 export type FocusCardProps = {
   symbol: string;
@@ -16,7 +17,9 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
 
   return (
     <BaseCard
-      className="flex flex-col gap-1 min-h-27" // fixed height to make sure card doesn't flicker after loading.
+    // fixed height to make sure card doesn't flicker after loading.
+      className="flex flex-col gap-1 min-h-27"
+      // Stub function left here on purpose to enable the hover effect. In my design, hover effect is enable when onClick binding is detected.
       onClick={loading ? undefined : () => {}}
     >
       <div className="flex items-center justify-between gap-3 mb-1">
@@ -33,7 +36,7 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
           )}
         </div>
         {loading ? (
-          <div className="w-10 h-10 rounded-full bg-skeleton skeleton-pulse shrink-0" />
+          <IconSkeleton />
         ) : (
           <PairIcon symbol={symbol} className="w-10 h-10 shrink-0" />
         )}

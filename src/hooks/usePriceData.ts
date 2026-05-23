@@ -47,7 +47,7 @@ function startTicker() {
 
   const priceStore = usePriceStore.getState;
 
-  // seed initial prices with startPrice ± at least 0.1 absolute delta
+  // seed initial prices with startPrice ± at least 0.01 absolute delta
   for (const { symbol, name } of allSymbols) {
     const base = generateBasePrice(symbol);
     priceStore().setStartPrice(symbol, name, base);

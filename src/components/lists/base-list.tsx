@@ -3,6 +3,7 @@ import BaseCard from "@/components/cards/base-card";
 import { twMerge } from "tailwind-merge";
 import TableHeaderCellSkeleton from "@/components/skeletons/table-header-cell-skeleton";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import TableRowCellSkeleton from "../skeletons/table-row-cell-skeleton";
 
 export interface Identifiable {
   id: string | number;
@@ -114,7 +115,7 @@ function BaseList<T extends Identifiable>({
                       h.containerClassName,
                     )}
                   >
-                    <div className="h-4 w-full rounded bg-skeleton skeleton-pulse inline-block" />
+                    <TableRowCellSkeleton />
                   </td>
                 ))}
               </tr>

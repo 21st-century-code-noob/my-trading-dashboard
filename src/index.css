@@ -17,6 +17,7 @@
 
   --animate-flash-up: flash-up 600ms ease-in-out;
   --animate-flash-down: flash-down 600ms ease-in-out;
+  --animate-skeleton-pulse: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes flash-up {
@@ -29,19 +30,7 @@
   50% { color: var(--color-down); }
 }
 
-.animate-flash-up {
-  animation: flash-up 600ms ease-in-out;
-}
-
-.animate-flash-down {
-  animation: flash-down 600ms ease-in-out;
-}
-
 @keyframes skeleton-pulse {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
-}
-
-.skeleton-pulse {
-  animation: skeleton-pulse 1.5s ease-in-out infinite;
 }

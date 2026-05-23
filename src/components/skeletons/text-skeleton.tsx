@@ -20,7 +20,7 @@ function TextSkeleton({
         <div
           key={i}
           className={twMerge(
-            "h-4 w-full rounded bg-skeleton skeleton-pulse inline",
+            "h-4 w-full rounded bg-skeleton animate-skeleton-pulse inline",
             barClassName,
           )}
         />
