@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 import BaseList from "@/components/lists/base-list";
-import type { ListHeader } from "@/components/lists/base-list";
+import type { ListHeader, SnapshotSortConfig } from "@/components/lists/base-list";
 import SymbolNameCell from "./list-cells/symbol-name-cell";
 import PriceChangeCell from "./list-cells/price-change-cell";
 import PriceCell from "./list-cells/price-cell";
@@ -15,14 +15,8 @@ type WatchRow = {
 };
 
 type SortKey = "name" | "price" | "change";
-type SortOrder = "ascend" | "descend";
 
-interface SortConfig {
-  key: SortKey;
-  order: SortOrder;
-  /** Snapshot of price/change values captured at sort time, keyed by symbol */
-  snapshot: Record<string, number>;
-}
+type SortConfig = SnapshotSortConfig<SortKey>;
 
 const headers: ListHeader<WatchRow>[] = [
   {
@@ -115,6 +109,8 @@ function WatchList({ loading = false }: WatchListProps) {
       <BaseList
         headers={headers}
         data={sortedSnapshot}
+        // deliberately left a stub here to enable the hover effect.
+        // hover effect is automatically enabled when onRowClick function presents.
         onRowClick={() => {}}
         sortKey={sortConfig.key}
         sortOrder={sortConfig.order}

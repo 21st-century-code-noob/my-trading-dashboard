@@ -1,18 +1,18 @@
 import { create } from "zustand";
 import dummySymbols from "../data/dummy-symbols.json";
 
-export interface SymbolPair {
+export type SymbolPair = {
   symbol: string;
   name: string;
-}
+};
 
-interface SymbolStore {
+export type SymbolStore = {
   focusList: SymbolPair[];
   watchList: SymbolPair[];
   /** Deduplicated union of focus + watch lists */
   allSymbols: SymbolPair[];
   isLoading: boolean;
-}
+};
 
 export const useSymbolStore = create<SymbolStore>(() => ({
   focusList: [],

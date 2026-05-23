@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 import TextSkeleton from "@/components/skeletons/text-skeleton";
 import { usePriceData } from "@/hooks/usePriceData";
 
-type PriceChangeTextProps = {
+export type PriceChangeTextProps = {
   symbol: string;
   decimals?: number;
   /** CSS class for the skeleton bar, merged with default "h-5 w-16". */

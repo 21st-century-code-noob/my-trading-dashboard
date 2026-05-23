@@ -1,9 +1,9 @@
 import { type FC, type ReactNode, useId } from "react";
 
-interface PairIconProps {
+export type PairIconProps = {
   symbol: string;
   className?: string;
-}
+};
 
 type IconDef = {
   viewBox: string;

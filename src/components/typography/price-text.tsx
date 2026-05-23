@@ -3,7 +3,7 @@ import { useFlashOnChange } from "@/hooks/useFlashOnChange";
 import TextSkeleton from "@/components/skeletons/text-skeleton";
 import { usePriceData } from "@/hooks/usePriceData";
 
-type PriceTextProps = {
+export type PriceTextProps = {
   symbol: string;
   decimals?: number;
   /** CSS class for the skeleton bar, merged with default "h-5 w-20". */

@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-type BaseCardProps = {
+export type BaseCardProps = {
   children?: React.ReactNode;
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;

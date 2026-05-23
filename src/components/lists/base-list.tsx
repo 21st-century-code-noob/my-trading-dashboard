@@ -5,9 +5,18 @@ import TableHeaderCellSkeleton from "@/components/skeletons/table-header-cell-sk
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import TableRowCellSkeleton from "../skeletons/table-row-cell-skeleton";
 
-export interface Identifiable {
+export type SortConfig<TSortKey> = {
+  key: TSortKey;
+  order: "ascend" | "descend";
+};
+
+export type SnapshotSortConfig<TSortKey> = SortConfig<TSortKey> & {
+  snapshot: Record<string, number>;
+};
+
+export type Identifiable = {
   id: string | number;
-}
+};
 
 export type ListHeader<T extends Identifiable> = {
   key: (keyof T) | (string & {});
@@ -20,7 +29,7 @@ export type ListHeader<T extends Identifiable> = {
   align?: "left" | "right";
 };
 
-type TickerListProps<T extends Identifiable> = {
+export type BaseListProps<T extends Identifiable> = {
   headers: ListHeader<T>[];
   data: T[];
   rowClassName?: string;
@@ -44,7 +53,7 @@ function BaseList<T extends Identifiable>({
   rowClassName,
   loading = false,
   rowsSkeletonCount = 8,
-}: TickerListProps<T>) {
+}: BaseListProps<T>) {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const visibleHeaders = headers.filter(
@@ -125,7 +134,7 @@ function BaseList<T extends Identifiable>({
               <tr
                 key={row.id}
                 onClick={() => {
-                  if (onRowClick) onRowClick(row);
+                  if (!loading && onRowClick) onRowClick(row);
                 }}
                 className={twMerge(
                   onRowClick ? "hover:bg-card-hover cursor-pointer" : undefined,
