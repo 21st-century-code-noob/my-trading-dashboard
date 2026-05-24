@@ -14,7 +14,7 @@ function BaseCard({
   return (
     <div
       className={twMerge("bg-card border border-border rounded-xl p-3",
-        onClick ? "hover:bg-card-hover cursor-pointer" : undefined,
+        onClick ? "hover:bg-card-hover cursor-pointer" : null,
         className)}
       onClick={onClick}
     >

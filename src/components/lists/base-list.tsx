@@ -5,12 +5,12 @@ import TableHeaderCellSkeleton from "@/components/skeletons/table-header-cell-sk
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import TableRowCellSkeleton from "../skeletons/table-row-cell-skeleton";
 
-export type SortConfig<TSortKey> = {
-  key: TSortKey;
+export type SortConfig = {
+  key: string;
   order: "ascend" | "descend";
 };
 
-export type SnapshotSortConfig<TSortKey> = SortConfig<TSortKey> & {
+export type SnapshotSortConfig = SortConfig & {
   snapshot: Record<string, number>;
 };
 
@@ -25,6 +25,7 @@ export type ListHeader<T extends Identifiable> = {
   render?: (row: T) => React.ReactNode;
   hiddenOnMobile?: boolean;
   hiddenOnDesktop?: boolean;
+  sortable?: boolean;
   associatedKeys?: ((keyof T) | (string & {}))[];
   align?: "left" | "right";
 };
@@ -88,11 +89,11 @@ function BaseList<T extends Identifiable>({
                 className={twMerge(
                   "font-extralight uppercase py-3 text-sm text-left text-table-header px-3 last:text-right",
                   h.align === "right" ? "text-right" : null,
-                  !loading && onSort ? "hover:bg-card-hover cursor-pointer" : undefined,
+                  !loading && onSort && h.sortable ? "hover:bg-card-hover cursor-pointer" : null,
                   h.containerClassName,
                 )}
                 onClick={() => {
-                  if (!loading && onSort) onSort(getNextSortKey(h));
+                  if (!loading && onSort && h.sortable) onSort(getNextSortKey(h));
                 }}
               >
                 {loading ? (
@@ -137,7 +138,7 @@ function BaseList<T extends Identifiable>({
                   if (!loading && onRowClick) onRowClick(row);
                 }}
                 className={twMerge(
-                  onRowClick ? "hover:bg-card-hover cursor-pointer" : undefined,
+                  onRowClick ? "hover:bg-card-hover cursor-pointer" : null,
                   rowClassName,
                 )}
               >
