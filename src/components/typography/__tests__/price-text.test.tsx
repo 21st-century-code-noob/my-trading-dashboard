@@ -29,7 +29,7 @@ describe("PriceText", () => {
   it("renders formatted price with dollar sign", () => {
     setPrice("BTCUSD", 50000.5);
     render(<PriceText symbol="BTCUSD" />);
-    expect(screen.getByText("$50000.50")).toBeDefined();
+    expect(screen.getByText("$50,000.50")).toBeDefined();
   });
 
   it("renders '--' when price data is missing", () => {

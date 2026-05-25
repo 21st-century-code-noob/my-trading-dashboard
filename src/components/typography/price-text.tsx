@@ -18,15 +18,20 @@ function PriceText({ symbol, decimals = 2, skeletonClassName, className }: Price
   const { flashClass, flashKey } = useFlashOnChange(price);
 
   if (isLoading) {
-    return <TextSkeleton lines={1} barClassName={twMerge("h-5 w-20", skeletonClassName)} />;
+    return <TextSkeleton lines={1} barClassName={twMerge("h-4 w-20", skeletonClassName)} />;
   }
 
-  const fixedPrice = (price === undefined || price === null) ? "--" : `${price.toFixed(decimals)}`;
+  const fixedPrice = (price === undefined || price === null)
+    ? "--"
+    : price.toLocaleString("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
 
   return (
     <span
       key={flashKey}
-      className={twMerge(`font-light text-base font-mono text-foreground ${flashClass}`, className)}
+      className={twMerge(`font-mono text-base text-foreground ${flashClass}`, className)}
     >
       ${fixedPrice}
     </span>

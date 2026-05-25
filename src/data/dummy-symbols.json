@@ -2,21 +2,41 @@
   "focusList": [
     { "symbol": "BTCUSD", "name": "Bitcoin" },
     { "symbol": "ETHUSD", "name": "Ethereum" },
-    { "symbol": "USDAUD", "name": "USD to AUD" },
-    { "symbol": "GBPUSD", "name": "GBP to USD" }
+    { "symbol": "SOLUSD", "name": "Solana" },
+    { "symbol": "XRPUSD", "name": "Ripple" }
   ],
   "watchList": [
-    { "symbol": "SOLUSD", "name": "Solana" },
     { "symbol": "DOGEUSD", "name": "Dogecoin" },
-    { "symbol": "LTCUSD", "name": "Litecoin" },
-    { "symbol": "XRPUSD", "name": "Ripple" },
     { "symbol": "ADAUSD", "name": "Cardano" },
     { "symbol": "DOTUSD", "name": "Polkadot" },
-    { "symbol": "EURUSD", "name": "EUR to USD" },
-    { "symbol": "USDJPY", "name": "USD to JPY" },
-    { "symbol": "USDCAD", "name": "USD to CAD" },
-    { "symbol": "USDCHF", "name": "USD to CHF" },
-    { "symbol": "AUDUSD", "name": "AUD to USD" },
-    { "symbol": "NZDUSD", "name": "NZD to USD" }
-  ]
+    { "symbol": "LTCUSD", "name": "Litecoin" },
+    { "symbol": "AVAXUSD", "name": "Avalanche" },
+    { "symbol": "LINKUSD", "name": "Chainlink" },
+    { "symbol": "UNIUSD", "name": "Uniswap" },
+    { "symbol": "MATICUSD", "name": "Polygon" },
+    { "symbol": "APTUSD", "name": "Aptos" },
+    { "symbol": "ARBUSD", "name": "Arbitrum" },
+    { "symbol": "OPUSD", "name": "Optimism" },
+    { "symbol": "FILUSD", "name": "Filecoin" },
+    { "symbol": "ATOMUSD", "name": "Cosmos" },
+    { "symbol": "NEARUSD", "name": "NEAR Protocol" },
+    { "symbol": "INJUSD", "name": "Injective" },
+    { "symbol": "SEIUSD", "name": "Sei" },
+    { "symbol": "SUIUSD", "name": "Sui" },
+    { "symbol": "TIAUSD", "name": "Celestia" }
+  ],
+  "topList": {
+    "marketCap": [
+      { "symbol": "BTCUSD", "name": "Bitcoin" },
+      { "symbol": "ETHUSD", "name": "Ethereum" },
+      { "symbol": "SOLUSD", "name": "Solana" },
+      { "symbol": "XRPUSD", "name": "Ripple" }
+    ],
+    "gainer": [
+      { "symbol": "SOLUSD", "name": "Solana" },
+      { "symbol": "INJUSD", "name": "Injective" },
+      { "symbol": "SEIUSD", "name": "Sei" },
+      { "symbol": "SUIUSD", "name": "Sui" }
+    ]
+  }
 }

@@ -4,9 +4,13 @@ import type { ListHeader, SnapshotSortConfig } from "@/components/lists/base-lis
 import SymbolNameCell from "./list-cells/symbol-name-cell";
 import PriceChangeCell from "./list-cells/price-change-cell";
 import PriceCell from "./list-cells/price-cell";
+import VolumnCell from "./list-cells/volumn-cell";
+import CapCell from "./list-cells/cap-cell";
 import { useSymbolData } from "@/hooks/useSymbolData";
 import PriceAndChangeCell from "./list-cells/price-and-change-cell";
+import VolumnCapCell from "./list-cells/volumn-cap-cell";
 import { usePriceData } from "@/hooks/usePriceData";
+import DashboardSection from "@/components/sections/dashboard-section";
 
 type WatchRow = {
   symbol: string;
@@ -19,14 +23,14 @@ const headers: ListHeader<WatchRow>[] = [
     key: "name",
     label: "Name",
     render: (row) => <SymbolNameCell symbol={row.symbol} name={row.name} />,
-    containerClassName: "w-1/2",
+    containerClassName: "w-1/5",
     sortable: true,
   },
   {
     key: "price",
     label: "Price",
     render: (row) => <PriceCell symbol={row.symbol} />,
-    containerClassName: "w-1/4",
+    containerClassName: "w-1/5",
     hiddenOnMobile: true,
     align: "right",
     sortable: true,
@@ -35,19 +39,47 @@ const headers: ListHeader<WatchRow>[] = [
     key: "change",
     label: "24h Change",
     render: (row) => <PriceChangeCell symbol={row.symbol} />,
-    containerClassName: "w-1/4",
+    containerClassName: "w-1/5",
+    hiddenOnMobile: true,
+    align: "right",
+    sortable: true,
+  },
+  {
+    key: "volume",
+    label: "24h Volume",
+    render: (row) => <VolumnCell symbol={row.symbol} />,
+    containerClassName: "w-1/5",
+    hiddenOnMobile: true,
+    align: "right",
+    sortable: true,
+  },
+  {
+    key: "marketCap",
+    label: "Market Cap",
+    render: (row) => <CapCell symbol={row.symbol} />,
+    containerClassName: "w-1/5",
     hiddenOnMobile: true,
     align: "right",
     sortable: true,
   },
   {
     key: "price-and-change",
-    label: "Price & Chg",
+    label: "Price/Chg",
     render: (row) => <PriceAndChangeCell symbol={row.symbol} />,
-    containerClassName: "w-1/2",
+    containerClassName: "w-1/3",
     hiddenOnDesktop: true,
     align: "right",
     associatedKeys:["price", "change"],
+    sortable: true,
+  },
+  {
+    key: "volume-cap",
+    label: "Vol/Cap",
+    render: (row) => <VolumnCapCell symbol={row.symbol} />,
+    containerClassName: "w-1/3",
+    hiddenOnDesktop: true,
+    align: "right",
+    associatedKeys:["marketCap", "volume"],
     sortable: true,
   },
 ];
@@ -71,7 +103,7 @@ function WatchList({ loading = false }: WatchListProps) {
       const nextOrder = key === prev.key && prev.order === "ascend" ? "descend" : "ascend";
       const currentSnapshot: Record<string, number> = {};
 
-      if (key === "price" || key === "change") {
+      if (key === "price" || key === "change" || key === "volume" || key === "marketCap" || key === "volume-cap") {
         const storeState = getPriceDataSnapshot();
 
         for (const item of watchList) {
@@ -79,7 +111,13 @@ function WatchList({ loading = false }: WatchListProps) {
           currentSnapshot[item.symbol] =
             key === "price"
               ? (market?.currentPrice ?? 0)
-              : (market?.priceChange ?? 0);
+              : key === "change"
+                ? (market?.priceChange ?? 0)
+                : key === "volume"
+                  ? (market?.volume24h ?? 0)
+                  : key === "marketCap"
+                    ? (market?.marketCap ?? 0)
+                    : (market?.volume24h ?? 0);
         }
       }
 
@@ -103,8 +141,10 @@ function WatchList({ loading = false }: WatchListProps) {
   }, [sortConfig, watchList]);
 
   return (
-    <section>
-      <h2 className="text-2xl mb-3 pl-1">Watch List</h2>
+    <DashboardSection
+      title="Watch List"
+      onTitleClick={() => {}}
+    >
       <BaseList
         headers={headers}
         data={sortedSnapshot}
@@ -116,7 +156,7 @@ function WatchList({ loading = false }: WatchListProps) {
         onSort={onSort}
         loading={loading}
       />
-    </section>
+    </DashboardSection>
   );
 }
 

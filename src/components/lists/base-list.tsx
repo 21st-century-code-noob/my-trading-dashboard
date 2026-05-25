@@ -1,5 +1,4 @@
 import React from "react";
-import BaseCard from "@/components/cards/base-card";
 import { twMerge } from "tailwind-merge";
 import TableHeaderCellSkeleton from "@/components/skeletons/table-header-cell-skeleton";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -79,7 +78,7 @@ function BaseList<T extends Identifiable>({
   };
 
   return (
-    <BaseCard className="p-0 overflow-hidden">
+    <div className="p-0 overflow-x-auto">
       <table className="w-full p-3">
         <thead>
           <tr>
@@ -120,7 +119,7 @@ function BaseList<T extends Identifiable>({
                   <td
                     key={String(h.key)}
                     className={twMerge(
-                      "py-6 pl-3 h-auto last:pr-3 last:text-right",
+                      "py-4 pl-3 h-auto last:pr-3 last:text-right",
                       h.align === "right" ? "text-right" : null,
                       h.containerClassName,
                     )}
@@ -138,7 +137,7 @@ function BaseList<T extends Identifiable>({
                   if (!loading && onRowClick) onRowClick(row);
                 }}
                 className={twMerge(
-                  onRowClick ? "hover:bg-card-hover cursor-pointer" : null,
+                  onRowClick ? "hover:bg-card-hover transition-colors cursor-pointer" : null,
                   rowClassName,
                 )}
               >
@@ -146,7 +145,7 @@ function BaseList<T extends Identifiable>({
                   <td
                     key={String(h.key)}
                     className={
-                      twMerge("text-lg py-6 px-3 h-auto last:text-right",
+                      twMerge("text-lg py-3 px-3 h-auto last:text-right",
                         h.align === "right" ? "text-right" : null,
                         h.containerClassName,
                       )}
@@ -161,7 +160,7 @@ function BaseList<T extends Identifiable>({
           )}
         </tbody>
       </table>
-    </BaseCard>
+    </div>
   );
 }
 

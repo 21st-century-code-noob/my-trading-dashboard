@@ -18,33 +18,37 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
   return (
     <BaseCard
     // fixed height to make sure card doesn't flicker after loading.
-      className="flex flex-col gap-1 min-h-27"
+      className="flex flex-row gap-1 min-h-19 justify-between"
       // Stub function left here on purpose to enable the hover effect. In my design, hover effect is enable when onClick binding is detected.
       onClick={loading ? undefined : () => {}}
     >
-      <div className="flex items-center justify-between gap-3 mb-1">
-        <div className="min-w-0">
+      <div className="flex items-center justify-between">
+        <div className="min-w-0 flex flex-row items-center gap-2">
+          {loading ? (
+            <IconSkeleton />
+          ) : (
+            <PairIcon symbol={symbol} className="w-10 h-10 shrink-0" />
+          )}
           {loading ? (
             <>
-              <TextSkeleton lines={2} barClassName="h-5 w-16" />
+              <TextSkeleton lines={2} barClassName="h-4 w-16" />
             </>
           ) : (
-            <>
-              <div className="text-foreground font-bold text-lg truncate">{symbol}</div>
-              <div className="text-foreground/30 text-sm truncate">{priceData?.name}</div>
-            </>
+            <div className="flex flex-col gap-1">
+              <div className="text-foreground font-semibold text-base truncate">{priceData?.name}</div>
+              <div
+                className="text-foreground/60 font-light text-xs truncate"
+              >
+                {symbol}
+              </div>
+            </div>
           )}
         </div>
-        {loading ? (
-          <IconSkeleton />
-        ) : (
-          <PairIcon symbol={symbol} className="w-10 h-10 shrink-0" />
-        )}
       </div>
 
-      <div className="flex justify-between">
-        <PriceText symbol={symbol} />
-        <PriceChangeText symbol={symbol} />
+      <div className="flex flex-col justify-center items-end text-right gap-1">
+        <PriceText symbol={symbol} skeletonClassName="mb-2" className="font-semibold" />
+        <PriceChangeText symbol={symbol} className="text-sm" />
       </div>
     </BaseCard>
   );

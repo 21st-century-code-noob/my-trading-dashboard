@@ -13,8 +13,8 @@ function BaseCard({
 }: BaseCardProps) {
   return (
     <div
-      className={twMerge("bg-card border border-border rounded-xl p-3",
-        onClick ? "hover:bg-card-hover cursor-pointer" : null,
+      className={twMerge("bg-card border border-border rounded-2xl p-3",
+        onClick ? "hover:bg-card-hover hover:cursor-pointer hover:transition-colors" : null,
         className)}
       onClick={onClick}
     >

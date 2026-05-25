@@ -10,6 +10,7 @@ describe("symbolStore", () => {
     useSymbolStore.setState({
       focusList: [],
       watchList: [],
+      topList: { marketCap: [], gainer: [] },
       allSymbols: [],
       isLoading: true,
     });
@@ -19,6 +20,7 @@ describe("symbolStore", () => {
     expect(getStore().isLoading).toBe(true);
     expect(getStore().focusList).toEqual([]);
     expect(getStore().watchList).toEqual([]);
+    expect(getStore().topList).toEqual({ marketCap: [], gainer: [] });
     expect(getStore().allSymbols).toEqual([]);
   });
 
@@ -28,19 +30,23 @@ describe("symbolStore", () => {
       { symbol: "ETHUSD", name: "Ethereum" },
       { symbol: "BTCUSD", name: "Bitcoin" },
     ];
+    const topList = {
+      marketCap: [{ symbol: "SOLUSD", name: "Solana" }],
+      gainer: [{ symbol: "ETHUSD", name: "Ethereum" }],
+    };
 
     useSymbolStore.setState({
       focusList: focus,
       watchList: watch,
-      allSymbols: dedupeForTest(focus, watch),
+      topList,
+      allSymbols: dedupeForTest(focus, watch, topList),
       isLoading: false,
     });
 
-    // BTCUSD appears in both focus and watch — deduplication should keep one copy
+    // BTCUSD, ETHUSD, SOLUSD — deduplication across all lists
     const all = getStore().allSymbols;
-    expect(all).toHaveLength(2);
-    expect(all[0].symbol).toBe("BTCUSD");
-    expect(all[1].symbol).toBe("ETHUSD");
+    expect(all).toHaveLength(3);
+    expect(all.map((s) => s.symbol).sort()).toEqual(["BTCUSD", "ETHUSD", "SOLUSD"]);
   });
 });
 
@@ -48,10 +54,14 @@ describe("symbolStore", () => {
  * Replicates the deduplication logic from symbolStore.ts.
  * This is tested here because the real function is not exported.
  */
-function dedupeForTest(focusList: { symbol: string; name: string }[], watchList: { symbol: string; name: string }[]) {
+function dedupeForTest(
+  focusList: { symbol: string; name: string }[],
+  watchList: { symbol: string; name: string }[],
+  topList: { marketCap: { symbol: string; name: string }[]; gainer: { symbol: string; name: string }[] },
+) {
   const seen = new Set<string>();
   const result: { symbol: string; name: string }[] = [];
-  for (const item of [...focusList, ...watchList]) {
+  for (const item of [...focusList, ...watchList, ...topList.marketCap, ...topList.gainer]) {
     if (!seen.has(item.symbol)) {
       seen.add(item.symbol);
       result.push(item);

@@ -20,6 +20,8 @@ describe("priceStore", () => {
       expect(entry.startPrice).toBe(50000);
       expect(entry.priceChange).toBe(0);
       expect(entry.name).toBe("Bitcoin");
+      expect(entry.volume24h).toBe(0);
+      expect(entry.marketCap).toBe(0);
     });
 
     it("overwrites an existing entry with new start price", () => {
@@ -37,11 +39,13 @@ describe("priceStore", () => {
     it("merges partial data onto an existing entry", () => {
       getStore().setStartPrice("ETHUSD", "Ethereum", 3000);
 
-      getStore().updatePrice("ETHUSD", { currentPrice: 3100, priceChange: 3.33 });
+      getStore().updatePrice("ETHUSD", { currentPrice: 3100, priceChange: 3.33, volume24h: 500000, marketCap: 9_300_000_000 });
 
       const entry = getStore().priceData["ETHUSD"];
       expect(entry.currentPrice).toBe(3100);
       expect(entry.priceChange).toBe(3.33);
+      expect(entry.volume24h).toBe(500000);
+      expect(entry.marketCap).toBe(9_300_000_000);
       // unchanged fields
       expect(entry.startPrice).toBe(3000);
       expect(entry.name).toBe("Ethereum");

@@ -1,19 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: hsl(162 100% 41%);
-  --color-primary-foreground: hsl(165 40% 6%);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --color-background: hsl(165 20% 6%);        
-  --color-card: hsl(165 15% 10%);
-  --color-card-hover: hsl(165 15% 13.5%);
-  --color-skeleton: hsl(165 10% 20%);
-  --color-foreground: hsl(165 10% 93%);
-  --color-table-header: hsl(165 10% 55%);
-  --color-border: hsl(165 12% 16%);
+  --color-primary: hsl(124 94% 40%);
+  --color-primary-foreground: hsl(124 30% 15%);
 
-  --color-up: hsl(162 100% 41%);
-  --color-down: hsl(353 91% 62%);
+  --color-background: hsl(0 0% 100%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-hover: hsl(124 25% 94%);
+  --color-skeleton: hsl(124 10% 85%);
+  --color-foreground: hsl(124 15% 15%);
+  --color-table-header: hsl(124 10% 45%);
+  --color-border: hsl(124 15% 92%);
+
+  --color-up: hsl(164 38% 35%);
+  --color-down: hsl(358 50% 49%);
 
   --animate-flash-up: flash-up 600ms ease-in-out;
   --animate-flash-down: flash-down 600ms ease-in-out;

@@ -35,11 +35,11 @@ function PriceChangeText({ symbol, decimals = 2, skeletonClassName, className }:
   const priceChange = priceData?.priceChange;
 
   if (isLoading) {
-    return <TextSkeleton lines={1} barClassName={twMerge("h-5 w-16", skeletonClassName)} />;
+    return <TextSkeleton lines={1} barClassName={twMerge("h-4 w-16", skeletonClassName)} />;
   }
 
   return (
-    <span className={twMerge(`font-mono text-base font-light ${getChangeTextClass(priceChange)}`, className)}>
+    <span className={twMerge(`font-mono text-base ${getChangeTextClass(priceChange)}`, className)}>
       {getChangePercentString(priceChange, decimals)}
     </span>
 

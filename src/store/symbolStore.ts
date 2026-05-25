@@ -6,10 +6,16 @@ export type SymbolPair = {
   name: string;
 };
 
+export type TopList = {
+  marketCap: SymbolPair[];
+  gainer: SymbolPair[];
+};
+
 export type SymbolStore = {
   focusList: SymbolPair[];
   watchList: SymbolPair[];
-  /** Deduplicated union of focus + watch lists */
+  topList: TopList;
+  /** Deduplicated union of all symbol lists */
   allSymbols: SymbolPair[];
   isLoading: boolean;
 };
@@ -17,6 +23,7 @@ export type SymbolStore = {
 export const useSymbolStore = create<SymbolStore>(() => ({
   focusList: [],
   watchList: [],
+  topList: { marketCap: [], gainer: [] },
   allSymbols: [],
   isLoading: true,
 }));
@@ -24,7 +31,13 @@ export const useSymbolStore = create<SymbolStore>(() => ({
 function computeAllSymbols(): SymbolPair[] {
   const seen = new Set<string>();
   const result: SymbolPair[] = [];
-  for (const item of [...dummySymbols.focusList, ...dummySymbols.watchList]) {
+  const allLists = [
+    ...dummySymbols.focusList,
+    ...dummySymbols.watchList,
+    ...dummySymbols.topList.marketCap,
+    ...dummySymbols.topList.gainer,
+  ];
+  for (const item of allLists) {
     if (!seen.has(item.symbol)) {
       seen.add(item.symbol);
       result.push(item);
@@ -38,6 +51,7 @@ setTimeout(() => {
   useSymbolStore.setState({
     focusList: dummySymbols.focusList,
     watchList: dummySymbols.watchList,
+    topList: dummySymbols.topList,
     allSymbols: computeAllSymbols(),
     isLoading: false,
   });

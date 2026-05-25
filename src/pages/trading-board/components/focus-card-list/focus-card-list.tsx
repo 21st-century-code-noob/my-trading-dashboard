@@ -1,4 +1,5 @@
 import FocusCard from "@/components/cards/focus-card";
+import DashboardSection from "@/components/sections/dashboard-section";
 import { useSymbolData } from "@/hooks/useSymbolData";
 
 export type FocusCardListProps = {
@@ -11,9 +12,11 @@ function FocusCardList({ loading = false, skeletonNumber = 4 }: FocusCardListPro
   const { focusList } = useSymbolData();
 
   return (
-    <section>
-      <h2 className="text-2xl mb-3 pl-1">Trends</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <DashboardSection
+      title="Featured"
+      onTitleClick={() => {}}
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {loading
           ? Array.from({ length: skeletonNumber }).map((_, i) => <FocusCard key={i} symbol="" loading />)
           : focusList.map((focusItem) => (
@@ -23,7 +26,7 @@ function FocusCardList({ loading = false, skeletonNumber = 4 }: FocusCardListPro
             />
           ))}
       </div>
-    </section>
+    </DashboardSection>
   );
 }
 

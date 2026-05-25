@@ -58,7 +58,9 @@ function startTicker() {
     const priceChange = parseFloat(
       (((currentPrice - base) / base) * 100).toFixed(2),
     );
-    priceStore().updatePrice(symbol, { currentPrice, priceChange });
+    const volume24h = parseFloat((Math.random() * base * 1000).toFixed(2));
+    const marketCap = parseFloat((currentPrice * (1_000_000 + Math.random() * 100_000_000)).toFixed(2));
+    priceStore().updatePrice(symbol, { currentPrice, priceChange, volume24h, marketCap });
   }
 
   // Simulate 1-second price loading delay, then mark as loaded

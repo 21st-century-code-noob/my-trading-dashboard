@@ -7,6 +7,8 @@ export type PriceData = {
   /** The initial price when the ticker started — does not change after init */
   startPrice: number;
   name: string;
+  volume24h: number;
+  marketCap: number;
 };
 
 export type PriceStore = {
@@ -42,6 +44,8 @@ export const usePriceStore = create<PriceStore>((set, get) => ({
           priceChange: 0,
           startPrice,
           name,
+          volume24h: 0,
+          marketCap: 0,
         },
       },
     })),
