@@ -32,7 +32,7 @@ function RankItem({ symbol, name, rank }: { symbol: string; name: string; rank: 
 
       {/* Price + Change */}
       <div className="flex flex-col items-end gap-0.5 shrink-0">
-        <PriceText symbol={symbol} className="text-base font-semibold" />
+        <PriceText symbol={symbol} className="text-base" />
         <PriceChangeText symbol={symbol} className="text-xs" />
       </div>
     </div>

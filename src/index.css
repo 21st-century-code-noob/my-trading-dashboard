@@ -29,6 +29,7 @@ body {
   --animate-skeleton-pulse: skeleton-pulse 1.5s ease-in-out infinite;
 
   --text-sm: 0.85rem;
+  --text-3xl: 1.75rem;
 }
 
 .dark {

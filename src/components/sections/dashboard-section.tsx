@@ -17,7 +17,7 @@ function DashboardSection ({children, title, onTitleClick}: DashboardSectionProp
       >
         {title}
         {onTitleClick && (
-          <span>{" >"}</span>
+          <span className="text-foreground/50">{" >"}</span>
         )}
       </h3>
       {children}

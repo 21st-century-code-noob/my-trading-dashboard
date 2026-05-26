@@ -47,7 +47,7 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
       </div>
 
       <div className="flex flex-col justify-center items-end text-right gap-1">
-        <PriceText symbol={symbol} skeletonClassName="mb-2" className="font-semibold" />
+        <PriceText symbol={symbol} skeletonClassName="mb-2" />
         <PriceChangeText symbol={symbol} className="text-sm" />
       </div>
     </BaseCard>
