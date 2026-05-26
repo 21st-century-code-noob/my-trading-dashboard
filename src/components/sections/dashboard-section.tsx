@@ -9,17 +9,17 @@ export type DashboardSectionProps = {
 function DashboardSection ({children, title, onTitleClick}: DashboardSectionProps) {
   return (
     <section className="flex flex-col gap-6">
-      <h2
+      <h3
         className={twMerge(
-          "text-2xl font-semibold self-start",
-          onTitleClick ? "hover:text-primary hover: cursor-pointer" : null,
+          "text-3xl font-semibold self-start",
+          onTitleClick ? "hover:text-primary hover:cursor-pointer" : null,
         )}
       >
         {title}
         {onTitleClick && (
           <span>{" >"}</span>
         )}
-      </h2>
+      </h3>
       {children}
     </section>
   );

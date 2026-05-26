@@ -69,15 +69,15 @@ function CoreMetricCard({
   return (
     <BaseCard
       className={twMerge(
-        "flex flex-row py-2 justify-between items-center h-auto gap-3",
-        "sm:items-baseline sm:flex-col sm:min-w-48 sm:gap-1",
+        "flex flex-row p-4 justify-between items-center h-auto gap-3",
+        "sm:items-baseline sm:flex-col sm:min-w-56 sm:gap-1",
         selected && "ring-2 ring-blue-500 bg-blue-50/5",
       )}
       onClick={onSelect}
     >
-      <div className="text-sm">{title}</div>
+      <div className="text-sm text-table-header">{title}</div>
       <div className="flex flex-row items-baseline gap-1">
-        <div className={twMerge("font-mono text-lg font-semibold sm:text-2xl", mainColorClass)}>
+        <div className={twMerge("font-mono text-lg font-semibold sm:text-xl", mainColorClass)}>
           {formatValue(metric, option, showSign)}
         </div>
         {subMetric !== undefined && (

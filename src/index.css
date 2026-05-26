@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --color-primary: hsl(124 94% 40%);
+  --color-primary: hsl(124 94% 35%);
+  --color-primary-accent: hsl(124 94% 50%);
   --color-primary-foreground: hsl(124 30% 15%);
-
   --color-background: hsl(0 0% 100%);
   --color-card: hsl(0 0% 100%);
   --color-card-hover: hsl(124 25% 94%);
@@ -14,13 +21,29 @@
   --color-foreground: hsl(124 15% 15%);
   --color-table-header: hsl(124 10% 45%);
   --color-border: hsl(124 15% 92%);
-
-  --color-up: hsl(164 38% 35%);
+  --color-up: hsl(164 50% 40%);
   --color-down: hsl(358 50% 49%);
 
   --animate-flash-up: flash-up 600ms ease-in-out;
   --animate-flash-down: flash-down 600ms ease-in-out;
   --animate-skeleton-pulse: skeleton-pulse 1.5s ease-in-out infinite;
+
+  --text-sm: 0.85rem;
+}
+
+.dark {
+  --color-primary: hsl(124 70% 45%);
+  --color-primary-accent: hsl(124 94% 60%);
+  --color-primary-foreground: hsl(124 30% 90%);
+  --color-background: hsl(124 2% 4%);
+  --color-card: hsl(124 2% 6%);
+  --color-card-hover: hsl(124 8% 18%);
+  --color-skeleton: hsl(124 10% 18%);
+  --color-foreground: hsl(124 10% 90%);
+  --color-table-header: hsl(124 8% 55%);
+  --color-border: hsl(124 8% 22%);
+  --color-up: hsl(164 60% 55%);
+  --color-down: hsl(358 65% 60%);
 }
 
 @keyframes flash-up {

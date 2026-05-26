@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="min-h-screen min-w-xs bg-background text-foreground flex flex-col">
       <Header />
-      <div className={twMerge("my-6 space-y-3 max-w-8xl mx-auto w-full", DEFAULT_SPACING)}>
+      <div className={twMerge("my-6 space-y-3 max-w-7xl mx-auto w-full", DEFAULT_SPACING)}>
         <BreadScrumb />
         <TradingBoard />
       </div>

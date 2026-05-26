@@ -24,7 +24,7 @@ function BreadScrumb() {
             key={item.title}
             className={twMerge(
               BREAD_SCRUMB_CLASS_NAME,
-              "text-gray-700",
+              "text-foreground",
             )}
           >
             {item.title}
@@ -37,7 +37,7 @@ function BreadScrumb() {
               href={item.link}
               className={twMerge(
                 BREAD_SCRUMB_CLASS_NAME,
-                "hover:text-gray-700",
+                "hover:text-foreground",
               )}
             >
               {item.title}

@@ -6,7 +6,7 @@ function Ranking() {
   const { topList } = useSymbolData();
 
   return (
-    <DashboardSection title="Ranking" onTitleClick={() => {}}>
+    <DashboardSection title="Rankings" onTitleClick={() => {}}>
       <div className="flex flex-col gap-3 sm:flex-row">
         <RankingCard title="Market Cap" data={topList.marketCap} />
         <RankingCard title="Top Gainers" data={topList.gainer} />

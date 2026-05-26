@@ -9,7 +9,7 @@ function TradingBoard() {
   const { isLoading: symbolsLoading } = useSymbolData();
 
   return (
-    <main className="py-3 space-y-8">
+    <main className="py-3 space-y-12">
       <Hero />
       <CoreMetrics />
       <FocusCardList loading={symbolsLoading} />

@@ -23,7 +23,7 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
       onClick={loading ? undefined : () => {}}
     >
       <div className="flex items-center justify-between">
-        <div className="min-w-0 flex flex-row items-center gap-2">
+        <div className="min-w-0 flex flex-row items-center gap-3">
           {loading ? (
             <IconSkeleton />
           ) : (

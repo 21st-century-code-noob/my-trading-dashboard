@@ -27,7 +27,7 @@ const DEFAULT_METRICS: MarketMetrics = {
   btcDominanceChange: -0.5,
 };
 
-export const useMarketMetricsStore = create<MarketMetricsStore>((set, get) => ({
+export const useMarketMetricsStore = create<MarketMetricsStore>((_set, get) => ({
   ...DEFAULT_METRICS,
   isLoading: true,
   getMetric: (key) => get()[key],

@@ -43,7 +43,7 @@ function RankingCard({ title, data }: RankingCardProps) {
   if (data.length === 0) return null;
 
   return (
-    <BaseCard className="w-full">
+    <BaseCard className="w-full p-4">
       <div className="text-table-header uppercase text-sm font-light mb-3">
         {title}
       </div>
