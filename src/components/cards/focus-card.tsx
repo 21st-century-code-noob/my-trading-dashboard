@@ -18,7 +18,7 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
   return (
     <BaseCard
     // fixed height to make sure card doesn't flicker after loading.
-      className="flex flex-row gap-1 min-h-19 justify-between"
+      className="flex flex-row gap-1 min-h-17 justify-between"
       // Stub function left here on purpose to enable the hover effect. In my design, hover effect is enable when onClick binding is detected.
       onClick={loading ? undefined : () => {}}
     >
@@ -46,7 +46,7 @@ function FocusCard({ symbol, loading = false }: FocusCardProps) {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-end text-right gap-1">
+      <div className="flex flex-col justify-center items-end text-right">
         <PriceText symbol={symbol} skeletonClassName="mb-2" />
         <PriceChangeText symbol={symbol} className="text-sm" />
       </div>
